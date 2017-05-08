@@ -1,6 +1,7 @@
 // http://codepen.io/maydie/details/OVmxZZ
 
 import React, { Component, PropTypes } from 'react';
+import { findDOMNode } from 'react-dom';
 import getTextCoordinates from '../utils/getTextCoordinates';
 import createSliceTree from '../utils/createSliceTree';
 import Ring from './Ring';
@@ -142,8 +143,8 @@ export default class CakeChart extends Component {
   debouncedWindowResize = throttle(this.handleWindowResize, 50)
 
   updateLabelsSize = () => {
-    const labelsEl = React.findDOMNode(this.refs.labels);
-    const containerEl = React.findDOMNode(this.refs.container);
+    const labelsEl = findDOMNode(this.refs.labels);
+    const containerEl = findDOMNode(this.refs.container);
     const size = Math.min(containerEl.offsetHeight, containerEl.offsetWidth);
     labelsEl.style.height = size + 'px';
     labelsEl.style.width = size + 'px';
@@ -172,7 +173,7 @@ export default class CakeChart extends Component {
           <CSSTransitionGroup component='div'
                               className={classes.labelsTransition}
                               transitionName={labelTransitionName}
-                              transitionAppear={true}
+                              transitionAppear
                               ref='labels'>
             {sliceTree.map((block, idx) =>
               this.renderTexts(block, center, `${idx}-${key}`)
@@ -188,7 +189,7 @@ export default class CakeChart extends Component {
           <g style={centerRule.style}>
             <CSSTransitionGroup component={'g'}
                                 transitionName={transitionName}
-                                transitionAppear={true}>
+                                transitionAppear>
               {sliceTree.map((block, idx) =>
                 <Ring {...getRingProps(block, {
                   key: `${idx}-${key}`,
@@ -217,21 +218,25 @@ export default class CakeChart extends Component {
 
     return (
       <div key={key}
-           className={ringSheet.classes['labels-' + block.level]}>{[
-        for (slice of block.slices)
-          <div {...getLabelProps(
-            slice, block.slices.indexOf(slice),
-            getDefaultLabelProps(
-              slice,
-              block.slices.indexOf(slice),
-              center,
-              this.props,
-              classes
-            ),
-          )}>
-            {getLabel(slice, getDefaultLabel(slice))}
-          </div>
-      ]}
+           className={ringSheet.classes['labels-' + block.level]}>
+        {
+          block.slices.map(slice => {
+            return (
+              <div {...getLabelProps(
+                slice, block.slices.indexOf(slice),
+                getDefaultLabelProps(
+                  slice,
+                  block.slices.indexOf(slice),
+                  center,
+                  this.props,
+                  classes
+                ),
+              )}>
+                { getLabel(slice, getDefaultLabel(slice)) }
+              </div>
+            );
+          })
+        }
       </div>
     );
   }
