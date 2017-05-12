@@ -23,10 +23,27 @@ const TREE = {
       value: 30
     },
     {
-      value: 20
+      value: 1,
+      label: 's'
+    },
+    {
+      value: 20,
+      style: { background: '#000000' }
     }
   ]
 };
+
+function getLabel(slice, label) {
+  return label;
+}
+
+function getSliceProps(slice, idx, props) {
+  return { ...props, fill: '#000000' };
+}
+
+function getLabelProps(slice, idx, props) {
+  return { ...props, style: { ...props.style, background: '#00ff00' } };
+}
 
 storiesOf('Welcome', module)
   .add('to Storybook', () => (
@@ -48,5 +65,8 @@ storiesOf('CakeChart', module)
       coreRadius={120}
       ringWidth={80}
       ringWidthFactor={0.6}
+      getSliceProps={getSliceProps}
+      getLabelProps={getLabelProps}
+      getLabel={getLabel}
       onClick={() => {}} />
   ));
