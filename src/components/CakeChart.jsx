@@ -1,6 +1,7 @@
 // http://codepen.io/maydie/details/OVmxZZ
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import getTextCoordinates from '../utils/getTextCoordinates';
 import createSliceTree from '../utils/createSliceTree';
@@ -174,6 +175,9 @@ export default class CakeChart extends Component {
                               className={classes.labelsTransition}
                               transitionName={labelTransitionName}
                               transitionAppear
+                              transitionAppearTimeout={10000}
+                              transitionEnterTimeout={10000}
+                              transitionLeaveTimeout={10000}
                               ref='labels'>
             {sliceTree.map((block, idx) =>
               this.renderTexts(block, center, `${idx}-${key}`)
@@ -189,7 +193,10 @@ export default class CakeChart extends Component {
           <g style={centerRule.style}>
             <CSSTransitionGroup component={'g'}
                                 transitionName={transitionName}
-                                transitionAppear>
+                                transitionAppear
+                                transitionAppearTimeout={10000}
+                                transitionEnterTimeout={10000}
+                                transitionLeaveTimeout={10000}>
               {sliceTree.map((block, idx) =>
                 <Ring {...getRingProps(block, {
                   key: `${idx}-${key}`,
