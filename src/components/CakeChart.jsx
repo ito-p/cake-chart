@@ -8,7 +8,7 @@ import createSliceTree from '../utils/createSliceTree';
 import Ring from './Ring';
 import jss from 'jss';
 import JssVendorPrefixer from 'jss-vendor-prefixer';
-import CSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
+import CSSTransitionGroup from 'react-addons-css-transition-group';
 import getSliceRadiusRange from '../utils/getSliceRadiusRange';
 import getDefaultColor from '../utils/getDefaultColor';
 import classNames from 'classnames';
@@ -165,6 +165,9 @@ export default class CakeChart extends Component {
       transform: `translate(${center}px, ${center}px)`
     });
     const key = getKey(data, getDefaultKey(data));
+    const depth = sliceTree.length;
+    const appearTimeout = (((depth - 1) / 5) + 0.8) * 1000;
+    const enterTimeout = (((depth - 1) / 5) + 0.5) * 1000;
 
     return (
       <div className={className}
@@ -175,9 +178,9 @@ export default class CakeChart extends Component {
                               className={classes.labelsTransition}
                               transitionName={labelTransitionName}
                               transitionAppear
-                              transitionAppearTimeout={10000}
-                              transitionEnterTimeout={10000}
-                              transitionLeaveTimeout={10000}
+                              transitionAppearTimeout={appearTimeout}
+                              transitionEnterTimeout={enterTimeout}
+                              transitionLeaveTimeout={100}
                               ref='labels'>
             {sliceTree.map((block, idx) =>
               this.renderTexts(block, center, `${idx}-${key}`)
@@ -194,9 +197,9 @@ export default class CakeChart extends Component {
             <CSSTransitionGroup component={'g'}
                                 transitionName={transitionName}
                                 transitionAppear
-                                transitionAppearTimeout={10000}
-                                transitionEnterTimeout={10000}
-                                transitionLeaveTimeout={10000}>
+                                transitionAppearTimeout={appearTimeout}
+                                transitionEnterTimeout={enterTimeout}
+                                transitionLeaveTimeout={100}>
               {sliceTree.map((block, idx) =>
                 <Ring {...getRingProps(block, {
                   key: `${idx}-${key}`,
