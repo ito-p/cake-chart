@@ -75,6 +75,13 @@ storiesOf('CakeChart', module)
       tree={TREE} />
   ));
 
+storiesOf('CakeChart Hide labels', module)
+  .add('default', () => (
+    <SelectableCakeChart
+      tree={TREE}
+      showLabels={false}/>
+  ));
+
 class SelectableCakeChart extends Component {
   constructor(props) {
     super(props);
@@ -120,6 +127,7 @@ class SelectableCakeChart extends Component {
         getSliceProps={getSliceProps}
         getLabelProps={getLabelProps}
         getLabel={getLabel}
+        showLabels={this.props.showLabels}
         onClick={this.handleClick} />
     );
   }

@@ -152,7 +152,7 @@ export default class CakeChart extends Component {
   }
 
   render() {
-    const { sheet: { classes } } = this.props;
+    const { sheet: { classes }, showLabels = true } = this.props;
     const { coreRadius, ringWidth, onClick, getRingProps, getSliceProps,
             style, data, getKey, stroke, strokeWidth, limit, ringWidthFactor,
             transitionName = classes.pieChart,
@@ -182,9 +182,11 @@ export default class CakeChart extends Component {
                               transitionEnterTimeout={enterTimeout}
                               transitionLeaveTimeout={100}
                               ref='labels'>
-            {sliceTree.map((block, idx) =>
-              this.renderTexts(block, center, `${idx}-${key}`)
-            )}
+            {
+              showLabels ? sliceTree.map((block, idx) =>
+                this.renderTexts(block, center, `${idx}-${key}`)
+              ) : null
+            }
           </CSSTransitionGroup>
         </div>
         <svg width='100%'
